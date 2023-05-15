@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  weather-bdd:
+    build: ./mysql-bdd
+    image: w-bdd
+    container_name: mysql-bdd
+    networks:
+      - w-network
+    volumes:
+      - w-bdd-data:/var/lib/mysql
+
+  weather-app:
+    build: ./projet-java-web-sql
+    image: w-app
+    container_name: weather-app
+    depends_on:
+      - weather-bdd
+    ports:
+      - "9000:8080"
+    networks:
+      - w-network
+      
+networks:
+  w-network:
+
+volumes:
+  w-bdd-data:
